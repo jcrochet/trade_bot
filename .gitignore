@@ -14,3 +14,5 @@ app/user-agent/*
 trade_bot/strategies/*
 !trade_bot/strategies/hail_mary.py
 .direnv
+!app/user-agent/.gitkeep
+!app/proxy/.gitkeep
