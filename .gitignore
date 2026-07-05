@@ -1,0 +1,16 @@
+.env*
+exc_rate_scraper*
+shell.nix
+roadmap.txt
+tests
+postgres-data
+logs
+.venv
+__pycache__
+scripts/clear_log.py
+app/proxy/*
+app/user-agent/*
+*test.txt
+trade_bot/strategies/*
+!trade_bot/strategies/hail_mary.py
+.direnv

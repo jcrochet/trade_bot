@@ -1,0 +1,4 @@
+shell.nix
+exc_rate_scraper.*
+.env
+./*txt

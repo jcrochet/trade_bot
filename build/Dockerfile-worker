@@ -1,0 +1,20 @@
+FROM python:3.14.0b2-slim-bookworm
+
+WORKDIR /app
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install libpq-dev gcc python3-pandas -y
+
+COPY build/requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY trade_bot .
+
+RUN useradd --uid 1000 --user-group --no-create-home trader
+RUN chsh -s /usr/sbin/nologin root
+RUN chown -R trader:trader /app
+
+USER trader
+ENTRYPOINT ["sleep", "infinity"]
+

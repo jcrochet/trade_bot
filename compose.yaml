@@ -1,0 +1,49 @@
+services:
+  # controller:
+  #   image: trading_bot_controller:latest
+  #   build:
+  #     context: .
+  #     dockerfile: build/Dockerfile-controller
+  #   container_name: trading_bot_scraper
+  #   restart: unless-stopped
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+
+  worker1:
+    image: trading_bot_worker:latest
+    build:
+      context: .
+      dockerfile: build/Dockerfile-worker
+    container_name: trading_bot_worker1
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./app:/app
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - NOTIFICATION_TARGET=${NOTIFICATION_TARGET}
+
+  db:
+    image: postgres:16.3
+    container_name: trading_bot_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d trader_db"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+networks:
+  trading_bot:
